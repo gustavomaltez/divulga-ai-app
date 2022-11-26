@@ -1,5 +1,5 @@
 import { Database } from '@database';
-import { Advertising, User } from '@entities';
+import { Advertising, Rate, User } from '@entities';
 import { AppError } from '@errors';
 
 // DTO's -----------------------------------------------------------------------
@@ -56,6 +56,15 @@ export abstract class AdvertisingService {
    * @param advertisingId The id of the advertising to be deleted.
    */
   abstract delete(userId: string, advertisingId: string): Promise<void>;
+
+  /**
+   * Rates a advertising entry into database.
+   * 
+   * @param userId The id of the user that owns the advertising.
+   * @param advertisingId The id of the advertising to be rated.
+   * @param rating The rate of that ad.
+  */
+  abstract rate(advertisingId: string, rating: number): Promise<void>;
 }
 
 // Implementations -------------------------------------------------------------
@@ -85,7 +94,7 @@ export class DefaultAdvertisingService extends AdvertisingService {
   async get(userId: string): Promise<Advertising[]> {
     if (!userId) {
       const advertisingRepository = await this.database.getRepository(Advertising);
-      const advertising = await advertisingRepository.find({ relations: ['user'] });
+      const advertising = await advertisingRepository.find({ relations: ['user', 'rate'] });
       return advertising.map(ad => ({
         ...ad,
         user: {
@@ -99,7 +108,7 @@ export class DefaultAdvertisingService extends AdvertisingService {
     const userEntity = await user.findOne({ where: { id: userId } });
     if (!userEntity) throw new AppError('User not found');
     const advertisingRepository = await this.database.getRepository(Advertising);
-    const advertising = await advertisingRepository.find({ where: { user: userEntity } });
+    const advertising = await advertisingRepository.find({ where: { user: userEntity }, relations: ['rate'] });
     return advertising;
   }
 
@@ -121,5 +130,16 @@ export class DefaultAdvertisingService extends AdvertisingService {
     if (!advertisingEntity) throw new AppError('Advertising not found');
     if (advertisingEntity.user.id !== userId) throw new AppError('User not authorized');
     await advertisingRepository.remove(advertisingEntity);
+  }
+
+  async rate(advertisingId: string, rating: number): Promise<void> {
+    if (rating < 0 || rating > 5) throw new AppError('Invalid rating');
+    const advertisingRepository = await this.database.getRepository(Advertising);
+    const advertisingEntity = await advertisingRepository.findOne({ where: { id: advertisingId } });
+    if (!advertisingEntity) throw new AppError('Advertising not found');
+    const ratingRepository = await this.database.getRepository(Rate);
+    const ratingEntity = ratingRepository.create({ value: rating });
+    ratingEntity.advertising = advertisingEntity;
+    await ratingRepository.save(ratingEntity);
   }
 }

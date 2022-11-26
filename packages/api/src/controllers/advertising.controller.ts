@@ -8,6 +8,7 @@ export class AdvertisingController {
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
     this.list = this.list.bind(this);
+    this.rate = this.rate.bind(this);
   }
 
   async create(req: Request, res: Response) {
@@ -40,5 +41,14 @@ export class AdvertisingController {
   async list(req: Request, res: Response) {
     const advertisingList = await this.service.get(req.params?.id);
     res.status(200).json(advertisingList);
+  }
+
+  async rate(req: Request, res: Response) {
+    const { rating } = req.body;
+    if (!rating) res.status(400).json({ message: 'Rating is required' });
+    if (isNaN(rating)) res.status(400).json({ message: 'Rating is invalid' });
+
+    await this.service.rate(req.params.id, rating);
+    res.status(200).json();
   }
 }

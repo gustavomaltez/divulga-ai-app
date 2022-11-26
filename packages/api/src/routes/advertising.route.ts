@@ -14,6 +14,7 @@ const controller = new AdvertisingController(service);
 const advertisingRouter = express.Router();
 
 advertisingRouter.get('/:id?', controller.list);
+advertisingRouter.post('/rate/:id', controller.rate);
 advertisingRouter.use(ensureUserAuthentication);
 advertisingRouter.post('/', controller.create);
 advertisingRouter.put('/:id', controller.update);
