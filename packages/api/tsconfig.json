@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "CommonJS",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "typeRoots": [
+      "./src/@types",
+      "./node_modules/@types"
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "@utils": [
+        "utils/index.ts"
+      ],
+      "@database": [
+        "database/index.ts"
+      ],
+      "@entities": [
+        "entities/index.ts"
+      ],
+      "@services": [
+        "services/index.ts"
+      ],
+      "@controllers": [
+        "controllers/index.ts"
+      ],
+      "@middlewares": [
+        "middlewares/index.ts"
+      ],
+      "@routes": [
+        "routes/index.ts"
+      ],
+      "@errors": [
+        "errors/index.ts"
+      ],
+    }
+  },
+  "include": [
+    "src",
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+}
