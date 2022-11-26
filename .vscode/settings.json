@@ -1,0 +1,16 @@
+{
+    "editor.tabSize": 2,
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "editor.insertSpaces": true,
+    "editor.trimAutoWhitespace": false,
+    "editor.renderWhitespace": "all",
+    "typescriptHero.imports.organizeOnSave": false,
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true,
+        "source.organizeImports": false,
+    },
+}
