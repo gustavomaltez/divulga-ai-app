@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Rate } from './Rate.entity';
 import { User } from './User.entity';
 
@@ -13,8 +13,11 @@ export class Advertising {
   @Column({ type: 'varchar', length: 100, nullable: true })
   description?: string;
 
-  @Column({ type: 'timestamp with time zone', nullable: false })
-  date: Date;
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 
   @ManyToOne(() => User, (user) => user.ads)
   user: User;
