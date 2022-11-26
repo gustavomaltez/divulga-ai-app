@@ -23,7 +23,7 @@
         "database/index.ts"
       ],
       "@entities": [
-        "src/entities/index.ts"
+        "entities/index.ts"
       ],
       "@services": [
         "services/index.ts"
