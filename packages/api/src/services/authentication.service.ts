@@ -16,6 +16,10 @@ interface UserTokens {
   refreshToken: string;
 }
 
+interface RegisterUserResponse extends UserTokens {
+  id: string;
+}
+
 // Abstraction -----------------------------------------------------------------
 
 /**
@@ -34,7 +38,7 @@ export abstract class AuthenticationService {
    * 
    * @param user The user related data to be created into the database.
    */
-  abstract register(user: RegisterUserDTO): Promise<UserTokens>;
+  abstract register(user: RegisterUserDTO): Promise<RegisterUserResponse>;
 
   /**
    * Authenticates a user and returns the authentication token.
@@ -42,7 +46,7 @@ export abstract class AuthenticationService {
    * @param email The user email.
    * @param password The user password.
    */
-  abstract login(email: string, password: string): Promise<UserTokens>;
+  abstract login(email: string, password: string): Promise<RegisterUserResponse>;
 }
 
 // Implementations -------------------------------------------------------------
@@ -55,7 +59,7 @@ export class DefaultAuthenticationService extends AuthenticationService {
     this.login = this.login.bind(this);
   }
 
-  async register(user: RegisterUserDTO): Promise<UserTokens> {
+  async register(user: RegisterUserDTO): Promise<RegisterUserResponse> {
     if (!user.whatsapp) throw new AppError('User whatsapp is missing', 401);
     if (!user.email) throw new AppError('User email is missing', 401);
     if (!user.password) throw new AppError('User password is missing', 401);
@@ -69,10 +73,13 @@ export class DefaultAuthenticationService extends AuthenticationService {
     _user.password = hashString(_user.password);
     const createdUser = await userRepository.save(_user);
 
-    return generateUserTokens(createdUser);
+    return {
+      ...generateUserTokens(createdUser),
+      id: createdUser.id,
+    };
   }
 
-  async login(email: string, password: string): Promise<UserTokens> {
+  async login(email: string, password: string): Promise<RegisterUserResponse> {
     if (!email) throw new AppError('User email is missing', 401);
     if (!password) throw new AppError('User password is missing', 401);
 
@@ -84,6 +91,9 @@ export class DefaultAuthenticationService extends AuthenticationService {
 
     if (!isPasswordCorrect) throw new AppError('Invalid credentials');
 
-    return generateUserTokens(user);
+    return {
+      ...generateUserTokens(user),
+      id: user.id,
+    };
   }
 }

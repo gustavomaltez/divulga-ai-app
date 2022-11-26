@@ -11,7 +11,10 @@ export class Advertising {
   price: number;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
-  description?: string;
+  description: string;
+
+  @Column({ type: 'varchar', length: 400, nullable: true })
+  imageUrl: string;
 
   @CreateDateColumn()
   created_at: Date;
