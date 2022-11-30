@@ -9,6 +9,6 @@ export class Rate {
     @Column({ type: 'int', nullable: false })
     value: number;
 
-    @ManyToOne(() => Advertising, (advertising) => advertising.rate)
+    @ManyToOne(() => Advertising, (advertising) => advertising.rate, { onDelete: 'CASCADE' })
     advertising: Advertising;
 }

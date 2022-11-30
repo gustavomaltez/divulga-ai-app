@@ -16,6 +16,6 @@ export class User {
   @Column({ type: 'varchar', length: 100 })
   password: string;
 
-  @OneToMany(() => Advertising, (advertising) => advertising.user)
+  @OneToMany(() => Advertising, (advertising) => advertising.user, { onDelete: 'CASCADE' })
   ads: Advertising[];
 }

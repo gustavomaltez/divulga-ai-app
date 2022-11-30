@@ -25,9 +25,9 @@ export class Advertising {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => User, (user) => user.ads)
+  @ManyToOne(() => User, (user) => user.ads, { onDelete: 'CASCADE' })
   user: User;
 
-  @OneToMany(() => Rate, (rate) => rate.advertising)
+  @OneToMany(() => Rate, (rate) => rate.advertising, { onDelete: 'CASCADE' })
   rate: Rate[];
 }
