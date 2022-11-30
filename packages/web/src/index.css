@@ -91,3 +91,7 @@ body {
   border-radius: 9999px;
   background-color: #586165;
 }
+
+.capitalize-first::first-letter {
+  text-transform: uppercase;
+}

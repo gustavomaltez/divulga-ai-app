@@ -25,8 +25,8 @@ class AuthenticationManager {
     this.eventSystem.trigger('update');
   }
 
-  async register(name: string, email: string, password: string) {
-    const { data } = await api.post<Tokens>('/auth/register', { name, email, password });
+  async register(whatsapp: string, email: string, password: string) {
+    const { data } = await api.post<Tokens>('/auth/register', { whatsapp, email, password });
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
     api.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
