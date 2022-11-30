@@ -6,6 +6,7 @@ import { AppError } from '@errors';
 
 type AdvertisingDTO = {
   price: number;
+  title: string;
   description: string;
   imageUrl: string;
 };

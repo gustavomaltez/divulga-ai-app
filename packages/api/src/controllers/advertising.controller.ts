@@ -12,23 +12,25 @@ export class AdvertisingController {
   }
 
   async create(req: Request, res: Response) {
-    const { price, description, imageUrl } = req.body;
+    const { price, title, description, imageUrl } = req.body;
+    if (!title) res.status(400).json({ message: 'Title is required' });
     if (!price) res.status(400).json({ message: 'Price is required' });
     if (isNaN(price)) res.status(400).json({ message: 'Price is invalid' });
     if (!imageUrl) res.status(400).json({ message: 'Image is required' });
 
-    const advertisingData = { price, description, imageUrl };
+    const advertisingData = { price, title, description, imageUrl };
     const advertising = await this.service.create(req.user.id, advertisingData);
     res.status(200).json(advertising);
   }
 
   async update(req: Request, res: Response) {
-    const { price, description, imageUrl } = req.body;
+    const { price, title, description, imageUrl } = req.body;
+    if (!title) res.status(400).json({ message: 'Title is required' });
     if (!price) res.status(400).json({ message: 'Price is required' });
     if (isNaN(price)) res.status(400).json({ message: 'Price is invalid' });
     if (!imageUrl) res.status(400).json({ message: 'Image is required' });
 
-    const advertisingData = { price, description, imageUrl };
+    const advertisingData = { price, title, description, imageUrl };
     const advertising = await this.service.update(req.user.id, req.params.id, advertisingData);
     res.status(200).json(advertising);
   }
